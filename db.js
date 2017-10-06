@@ -6,16 +6,18 @@ const db = low(adapter);
 
 db.defaults({processedEvents: []}).write();
 
-export function saveParsedEvent(event) {
+export async function saveParsedEvent(event) {
     return db
         .get('processedEvents')
         .push({id: event.id})
         .write();
 }
 
-export function isEventAlreadyParsed(event) {
-    return db
+export async function checkUnparsedEvents(event) {
+    const check = db
         .get('processedEvents')
         .find({id: event.id})
         .value();
+
+    return !check && event;
 }

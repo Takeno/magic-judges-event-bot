@@ -1,6 +1,6 @@
 import request from 'request-promise';
-import {saveParsedEvent, isEventAlreadyParsed} from './db';
-import fetchEvents, {GRAND_PRIX, PRO_TOUR, ITALY_AND_MALTA} from './utils/fetch-events';
+import {saveParsedEvent, checkUnparsedEvents} from './db';
+import fetchEvents, {Types, Countries} from './utils/fetch-events';
 
 const DISCORD_WEBHOOK =
     'https://discordapp.com/api/webhooks/363350165232418847/hGgfhpWzqguAtMgXctd8xz7KL4WK7p6oGQgpj0dERfKX6jWWbW-q5J5pYrIQ8k4X-zlg';
@@ -30,15 +30,33 @@ function postEvent(event) {
                 },
             ],
         }),
-    }).then(() => event);
+    });
 }
 
-Promise.all([fetchEvents([GRAND_PRIX, PRO_TOUR]), fetchEvents(undefined, [ITALY_AND_MALTA])])
-    // Flat responses
-    .then(responses => responses.reduce((acc, arr) => acc.concat(arr), []))
+async function removeEventsAlreadyParsed(events) {
+    const checked = await Promise.all(
+        events.map(event => checkUnparsedEvents(event))
+    );
+
+    return checked.filter(c => !!c);
+}
+
+async function runBot() {
+    const responses = await Promise.all([
+        fetchEvents([Types.GRAND_PRIX, Types.PRO_TOUR]),
+        fetchEvents(undefined, [Countries.ITALY_AND_MALTA]),
+    ]);
+
+    // flat array
+    let events = responses.reduce((acc, arr) => acc.concat(arr), []);
+
     // Get only events not already sent
-    .then(events => events.filter(event => !isEventAlreadyParsed(event)))
-    // Sent items
-    .then(events => Promise.all(events.map(event => postEvent(event))))
-    // Save sent items
-    .then(events => events.forEach(event => saveParsedEvent(event)));
+    events = await removeEventsAlreadyParsed(events);
+
+    // Send items
+    await Promise.all(events.map(postEvent));
+
+    await events.map(saveParsedEvent);
+}
+
+runBot();
