@@ -62,6 +62,26 @@ export default function fetchEvents(types = [], countries = []) {
     query = query.concat(countries.map(country => `filter_region=${country}`));
 
     const querystring = query.join('&');
+    return request(`${ENDPOINT}?${querystring}`).then(body =>
+        parseEventsPage(body)
+    );
+}
 
-    return request(`${ENDPOINT}?${querystring}`).then(body => parseEventsPage(body));
+export function configToEvents(data) {
+    return data.map(({types = [], countries = []}) => {
+        return fetchEvents(
+            types.map(k => {
+                if (!Types[k]) {
+                    throw new Error('Unkown type ' + k);
+                }
+                return Types[k];
+            }),
+            countries.map(k => {
+                if (!Countries[k]) {
+                    throw new Error('Unkown country ' + k);
+                }
+                return Countries[k];
+            })
+        );
+    });
 }

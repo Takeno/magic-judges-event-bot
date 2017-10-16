@@ -1,6 +1,7 @@
 import request from 'request-promise';
 import {saveParsedEvent, checkUnparsedEvents} from './db';
-import fetchEvents, {Types, Countries} from './utils/fetch-events';
+import {configToEvents} from './utils/fetch-events';
+import config from './config.json';
 
 const DISCORD_WEBHOOK =
     'https://discordapp.com/api/webhooks/363350165232418847/hGgfhpWzqguAtMgXctd8xz7KL4WK7p6oGQgpj0dERfKX6jWWbW-q5J5pYrIQ8k4X-zlg';
@@ -42,10 +43,12 @@ async function removeEventsAlreadyParsed(events) {
 }
 
 async function runBot() {
-    const responses = await Promise.all([
-        fetchEvents([Types.GRAND_PRIX, Types.PRO_TOUR]),
-        fetchEvents(undefined, [Countries.ITALY_AND_MALTA]),
-    ]);
+    // const responses = await Promise.all([
+    //     fetchEvents([Types.GRAND_PRIX, Types.PRO_TOUR]),
+    //     fetchEvents(undefined, [Countries.ITALY_AND_MALTA]),
+    // ]);
+
+    const responses = await Promise.all(configToEvents(config.events));
 
     // flat array
     let events = responses.reduce((acc, arr) => acc.concat(arr), []);
