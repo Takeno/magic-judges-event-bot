@@ -7,6 +7,10 @@ const db = low(adapter);
 db.defaults({processedEvents: []}).write();
 
 export async function saveParsedEvent(event) {
+    if (process.env.DRY_RUN) {
+        return true;
+    }
+
     return db
         .get('processedEvents')
         .push({id: event.id})
