@@ -3,9 +3,6 @@ import {saveParsedEvent, checkUnparsedEvents} from './db';
 import {configToEvents} from './utils/fetch-events';
 import config from './config.json';
 
-const DISCORD_WEBHOOK =
-    'https://discordapp.com/api/webhooks/363350165232418847/hGgfhpWzqguAtMgXctd8xz7KL4WK7p6oGQgpj0dERfKX6jWWbW-q5J5pYrIQ8k4X-zlg';
-
 function formatDiscordDescription(event) {
     return `**Quando:** ${event.eventDate}
 **Dove:** ${event.location}
@@ -14,7 +11,7 @@ function formatDiscordDescription(event) {
 
 function postEvent(event) {
     return request({
-        url: DISCORD_WEBHOOK,
+        url: config.DISCORD_WEBHOOK,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

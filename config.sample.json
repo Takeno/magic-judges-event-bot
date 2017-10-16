@@ -1,0 +1,8 @@
+{
+    "DISCORD_WEBHOOK": "https://discordapp.com/api/webhooks/[...]",
+    "events":[{
+        "types": ["GRAND_PRIX", "PRO_TOUR"]
+    }, {
+        "countries": ["ITALY_AND_MALTA"]
+    }]
+}
