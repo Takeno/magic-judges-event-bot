@@ -11,7 +11,7 @@ function formatDiscordDescription(event) {
 
 function postEvent(event) {
     return request({
-        url: config.DISCORD_WEBHOOK,
+        url: config.DISCORD_WEBHOOK || process.env.DISCORD_WEBHOOK,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
