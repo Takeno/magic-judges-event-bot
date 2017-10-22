@@ -1,7 +1,7 @@
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 
-const adapter = new FileSync('./db.json');
+const adapter = new FileSync(__dirname + '/../data/db.json');
 const db = low(adapter);
 
 db.defaults({processedEvents: []}).write();
@@ -25,3 +25,5 @@ export async function checkUnparsedEvents(event) {
 
     return !check && event;
 }
+
+export async function close() {}

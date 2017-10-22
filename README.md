@@ -69,6 +69,19 @@ $ export DISCORD_WEBHOOK=https://discordapp.com/api/webhooks/[...]
 $ npm start
 ```
 
+### Persistency
+To avoid posting double, we need to save what events are already sent.
+There are two db providers:
+1. `lowdb` which will save events on a json file
+2. `redis` which will save events on a redis server
+
+`lowdb` is the default provider. To use Redis, you have to use some environment variables:
+
+```bash
+$ export DB=redis
+$ export REDIS_URL=<redis server>
+```
+
 ### Dry run
 
 To test your configuration, you can run bot in DRY_RUN mode. In this way, you'll get only info about what will be published.

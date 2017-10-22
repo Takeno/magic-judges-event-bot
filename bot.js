@@ -1,4 +1,4 @@
-import {saveParsedEvent, checkUnparsedEvents} from './db';
+import {saveParsedEvent, checkUnparsedEvents} from './databases';
 import {configToEvents} from './utils/fetch-events';
 import postEvent from './utils/discord-sender';
 import config from './config.json';

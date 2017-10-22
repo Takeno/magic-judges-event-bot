@@ -13,6 +13,7 @@
     "dependencies": {
         "cheerio": "^1.0.0-rc.2",
         "lowdb": "^1.0.0",
+        "redis": "^2.8.0",
         "request": "^2.83.0",
         "request-promise": "^4.2.2"
     },
