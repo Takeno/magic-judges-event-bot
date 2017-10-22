@@ -97,3 +97,26 @@ Posting  { id: '8677',
   applicationClose: '2017-11-10',
   applicationCloseRemaining: '3 weeks, 4 days' }
 ```
+
+## Running on Heroku
+
+```bash
+$ heroku create
+$ heroku addons:create rediscloud:30
+$ heroku config:set NPM_CONFIG_PRODUCTION=false
+$ heroku config:set DRY_RUN=1
+$ heroku config:set DB=redis
+$ heroku config:set DISCORD_WEBHOOK=<discord webhook>
+# Copy REDISCLOUD url from:
+$ heroku config
+# Paste it in REDIS_URL:
+$ heroku config:set REDIS_URL=<rediscloud url>
+$ git push heroku master
+# To see logs:
+$ heroku logs
+
+# Add scheduler
+$ heroku addons:add scheduler
+# Set scheduler with your frequency
+$ heroku addons:open scheduler
+```
