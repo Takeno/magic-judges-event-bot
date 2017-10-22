@@ -11,7 +11,7 @@ async function removeEventsAlreadyParsed(events) {
     return checked.filter(c => !!c);
 }
 
-export async function runBot() {
+export default async function runBot() {
     // const responses = await Promise.all([
     //     fetchEvents([Types.GRAND_PRIX, Types.PRO_TOUR]),
     //     fetchEvents(undefined, [Countries.ITALY_AND_MALTA]),
