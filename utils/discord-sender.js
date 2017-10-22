@@ -1,5 +1,6 @@
 import request from 'request-promise';
 import config from '../config.json';
+import logger from '../utils/logger';
 
 function formatDiscordDescription(event) {
     return `**Quando:** ${event.eventDate}
@@ -8,8 +9,8 @@ function formatDiscordDescription(event) {
 }
 
 export default function postEvent(event) {
+    logger.info('Posting event to discord: ', event);
     if (process.env.DRY_RUN) {
-        console.log('Posting ', event);
         return true;
     }
 

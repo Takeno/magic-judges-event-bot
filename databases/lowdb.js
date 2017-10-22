@@ -1,12 +1,13 @@
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
-
+import logger from '../utils/logger';
 const adapter = new FileSync(__dirname + '/../data/db.json');
 const db = low(adapter);
 
 db.defaults({processedEvents: []}).write();
 
 export async function saveParsedEvent(event) {
+    logger.debug('Saving %d to lowdb', event.id);
     if (process.env.DRY_RUN) {
         return true;
     }
@@ -22,6 +23,8 @@ export async function checkUnparsedEvents(event) {
         .get('processedEvents')
         .find({id: event.id})
         .value();
+
+    logger.debug('Checking %d in lowdb with result: %s', event.id, !!check);
 
     return !check && event;
 }

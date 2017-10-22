@@ -1,4 +1,5 @@
 import request from 'request-promise';
+import logger from '../utils/logger';
 import parseEventsPage from './event-page-parser';
 
 // events type
@@ -62,6 +63,9 @@ export default function fetchEvents(types = [], countries = []) {
     query = query.concat(countries.map(country => `filter_region=${country}`));
 
     const querystring = query.join('&');
+
+    logger.info(`Requesting ${ENDPOINT}?${querystring}`);
+
     return request(`${ENDPOINT}?${querystring}`).then(body =>
         parseEventsPage(body)
     );
