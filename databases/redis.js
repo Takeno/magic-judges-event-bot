@@ -4,6 +4,9 @@ import logger from '../utils/logger';
 const client = redis.createClient(process.env.REDIS_URL);
 
 const KEY = 'EVENT_';
+// Save event for 45 days
+// to keep database small
+const TTL = 60 * 60 * 24 * 45;
 
 export function saveParsedEvent(event) {
     if (process.env.DRY_RUN) {
@@ -11,7 +14,7 @@ export function saveParsedEvent(event) {
     }
 
     return new Promise((resolve, reject) => {
-        client.set(KEY + event.id, JSON.stringify(event), err => {
+        client.setex(KEY + event.id, TTL, JSON.stringify(event), err => {
             if (err) {
                 return reject(err);
             }
