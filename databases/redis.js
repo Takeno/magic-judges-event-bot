@@ -11,7 +11,7 @@ export function saveParsedEvent(event) {
     }
 
     return new Promise((resolve, reject) => {
-        client.set(KEY + event.id, event, err => {
+        client.set(KEY + event.id, JSON.stringify(event), err => {
             if (err) {
                 return reject(err);
             }
