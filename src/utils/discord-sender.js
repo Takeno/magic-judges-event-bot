@@ -3,11 +3,13 @@ import request from 'request-promise';
 import config from '../../config.json';
 import logger from '../utils/logger';
 import type {Event} from './types.js.flow';
+import {translate} from '../i18n';
 
-function formatDiscordDescription(event) {
-    return `**Quando:** ${event.eventDate}
-**Dove:** ${event.location}
-**Chiusura application:** ${event.applicationClose}`;
+function formatDiscordDescription(event: $FlowFixMe, language: string = 'en') {
+    const t = translate(language);
+    return `**${t('when', 'When:')}** ${event.eventDate}
+**${t('where', 'Where:')}** ${event.location}
+**${t('closing', 'Applications close:')}** ${event.applicationClose}`;
 }
 
 export default function postEvent(event: Event) {
@@ -28,7 +30,10 @@ export default function postEvent(event: Event) {
             embeds: [
                 {
                     title: event.name,
-                    description: formatDiscordDescription(event),
+                    description: formatDiscordDescription(
+                        event,
+                        config.language,
+                    ),
                     type: 'rich',
                     url: event.url,
                 },
