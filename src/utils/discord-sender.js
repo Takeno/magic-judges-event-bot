@@ -14,7 +14,23 @@ function formatDiscordDescription(event: $FlowFixMe, language: string = 'en') {
 
 export default function postEvent(event: Event) {
     logger.info('Posting event to discord: ', event);
+    const t = translate(config.language);
+    const description = formatDiscordDescription(event, config.language);
+    const content = `${t(
+        'content.open',
+        'Applications are open for',
+    )} **${event.name}**! ${t(
+        'content.closeDate',
+        'Applications will close in:',
+    )} *${event.applicationCloseRemaining}*`;
+
     if (process.env.DRY_RUN) {
+        logger.info(`DRY_RUN selected.
+Posted event infos:
+Description:
+${description}
+Content:
+${content}`);
         return true;
     }
 
@@ -25,15 +41,12 @@ export default function postEvent(event: Event) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            content: `È aperta l'application per **${event.name}**! Chiuderà tra: *${event.applicationCloseRemaining}*`,
+            content,
             // https://discordapp.com/developers/docs/resources/channel#embed-object
             embeds: [
                 {
+                    description,
                     title: event.name,
-                    description: formatDiscordDescription(
-                        event,
-                        config.language,
-                    ),
                     type: 'rich',
                     url: event.url,
                 },

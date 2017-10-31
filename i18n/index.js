@@ -6,6 +6,8 @@ export type Language = {|
     closing?: string,
     when?: string,
     where?: string,
+    'content.open'?: string,
+    'content.closeDate'?: string,
 |};
 
 const translations = {
