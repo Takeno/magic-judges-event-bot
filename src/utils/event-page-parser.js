@@ -1,4 +1,4 @@
-const cheerio = require('cheerio');
+import cheerio from 'cheerio';
 
 export default function parseEventsPage(html) {
     const $ = cheerio.load(html);

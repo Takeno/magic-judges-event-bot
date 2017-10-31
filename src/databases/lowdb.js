@@ -1,7 +1,8 @@
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
+import low from 'lowdb';
+import FileSync from 'lowdb/adapters/FileSync';
 import logger from '../utils/logger';
-const adapter = new FileSync(__dirname + '/../data/db.json');
+
+const adapter = new FileSync(__dirname + '/../../data/db.json');
 const db = low(adapter);
 
 db.defaults({processedEvents: []}).write();

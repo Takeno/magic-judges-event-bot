@@ -2,11 +2,13 @@
     "name": "judge-events-bot",
     "version": "1.0.0",
     "description": "Get notifications when a new events is available",
-    "main": "index.js",
+    "main": "lib/index.js",
     "scripts": {
-        "start": "babel-node index --presets es2015,stage-2",
+        "build": "babel src --out-dir lib",
+        "start:dev": "babel-node src/index",
+        "start": "NODE_ENV=production node lib/index.js",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "lint": "eslint --fix ."
+        "lint": "eslint --fix src   "
     },
     "author": "Matteo Manchi <matteo.manchi@gmail.com>",
     "license": "MIT",

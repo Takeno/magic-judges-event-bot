@@ -2,7 +2,7 @@ import {saveParsedEvent, checkUnparsedEvents} from './databases';
 import {configToEvents} from './utils/fetch-events';
 import postEvent from './utils/discord-sender';
 import logger from './utils/logger';
-import config from './config.json';
+import config from '../config.json';
 
 async function removeEventsAlreadyParsed(events) {
     const checked = await Promise.all(

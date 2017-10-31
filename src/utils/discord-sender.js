@@ -1,5 +1,5 @@
 import request from 'request-promise';
-import config from '../config.json';
+import config from '../../config.json';
 import logger from '../utils/logger';
 
 function formatDiscordDescription(event) {
