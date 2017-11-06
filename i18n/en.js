@@ -5,8 +5,8 @@ const en: Language = {
     when: 'Date:',
     where: 'Location:',
     closing: 'Applications close:',
-    'content.open': 'Applications are open for',
-    'content.closeDate': 'Applications will close in:',
+    content:
+        'Applications are open for **%{eventName}**! Applications will close in: *%{eventClose}*',
 };
 
 export default en;

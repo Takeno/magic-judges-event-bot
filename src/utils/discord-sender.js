@@ -16,16 +16,17 @@ export default function postEvent(event: Event) {
     logger.info('Posting event to discord: ', event);
     const t = translate(config.language);
     const description = formatDiscordDescription(event, config.language);
-    const content = `${t(
-        'content.open',
-        'Applications are open for',
-    )} **${event.name}**! ${t(
-        'content.closeDate',
-        'Applications will close in:',
-    )} *${event.applicationCloseRemaining}*`;
+    const content = t(
+        'content',
+        `Applications are open for **${event.name}**! Applications will close in: *${event.applicationCloseRemaining}*`,
+        {
+            eventName: event.name,
+            eventClose: event.applicationCloseRemaining,
+        },
+    );
 
     if (process.env.DRY_RUN) {
-        logger.info(`DRY_RUN selected.
+        logger.debug(`DRY_RUN selected.
 Posted event infos:
 Description:
 ${description}

@@ -6,8 +6,7 @@ export type Language = {|
     closing?: string,
     when?: string,
     where?: string,
-    'content.open'?: string,
-    'content.closeDate'?: string,
+    content?: string,
 |};
 
 const translations = {
@@ -15,15 +14,56 @@ const translations = {
     it,
 };
 
-function translator(
-    dicts: $Exact<typeof translations>,
-): (
-    language: string,
-) => (key: $Keys<Language>, defaultMessage: string) => string {
-    return language => (key, defaultMessage) =>
-        (dicts[language] && dicts[language][key]) || defaultMessage;
+// Cheers to Polyglot.js for this interpolation function
+// https://github.com/airbnb/polyglot.js/blob/master/index.js
+function interpolate(
+    phrase: string,
+    substitutions: ?{[key: string]: string},
+): string {
+    if (!substitutions) {
+        return phrase;
+    }
+    const dollarRegex = /\$/g;
+    const dollarBillsYall = '$$';
+    const tokenRegex = /%\{(.*?)\}/g;
+    const replace = String.prototype.replace;
+    return replace.call(
+        phrase,
+        tokenRegex,
+        (expression: string, argument: string): string => {
+            if (
+                !substitutions ||
+                !substitutions[argument] ||
+                substitutions[argument] == null
+            ) {
+                return expression;
+            }
+            return replace.call(
+                substitutions[argument],
+                dollarRegex,
+                dollarBillsYall,
+            );
+        },
+    );
 }
 
-const translate = translator(translations);
+function translator(
+    dicts: $Exact<typeof translations>,
+    interpolate: typeof interpolate,
+): (
+    language: string,
+) => (
+    key: $Keys<Language>,
+    defaultMessage: string,
+    substitutions: ?{[key: string]: string},
+) => string {
+    return language => (key, defaultMessage, substitutions) =>
+        (dicts[language] &&
+            dicts[language][key] &&
+            interpolate(dicts[language][key], substitutions)) ||
+        defaultMessage;
+}
+
+const translate = translator(translations, interpolate);
 
 export {translate};

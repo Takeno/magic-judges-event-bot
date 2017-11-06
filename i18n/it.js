@@ -5,8 +5,8 @@ const it: Language = {
     when: 'Quando:',
     where: 'Dove:',
     closing: 'Chiusura application:',
-    'content.open': "È aperta l'application per",
-    'content.closeDate': 'Chiuderà tra:',
+    content:
+        "È aperta l'application per **%{eventName}**! Chiuderà tra: *%{eventClose}*",
 };
 
 export default it;

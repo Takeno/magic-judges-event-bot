@@ -92,6 +92,22 @@ $ export DISCORD_WEBHOOK=https://discordapp.com/api/webhooks/[...]
 $ npm start
 ```
 
+### Language
+You can choose the output language by adding a `language` key to your `config.json` file:
+```json
+{
+    "language": "it"
+}
+```
+
+The default language is English. Available languages at this time are:
+| Language | Code |
+| -------- | ---- |
+| English | `en` |
+| Italian | `it` |
+
+Help on translations is warmly welcome. Translating this tool in your own language is very quick, since it's made of just a couple sentences.
+
 ### Persistency
 To avoid posting double, we need to save what events are already sent.
 There are two db providers:
@@ -119,6 +135,28 @@ Posting  { id: '8677',
   eventDate: 'Jan. 26, 2018-Jan. 28, 2018',
   applicationClose: '2017-11-10',
   applicationCloseRemaining: '3 weeks, 4 days' }
+```
+
+You can also set the logger level to `debug` instead of the default `info`, by adding an additional environment variable. This way, you will also see a log of the actual text that would be sent to Discord:
+```sh
+$ DRY_RUN=1 LOGGER=debug npm start
+
+Posting  { id: '8677',
+  name: 'Grand Prix Houston 2018',
+  url: 'https://apps.magicjudges.org/events/8677/',
+  location: 'Houston, Texas, United States',
+  eventDate: 'Jan. 26, 2018-Jan. 28, 2018',
+  applicationClose: '2017-11-10',
+  applicationCloseRemaining: '3 weeks, 4 days' }
+
+DRY_RUN selected.
+Posted event infos:
+Description:
+**Date:** Jan. 26, 2018-Jan. 28, 2018
+**Location:** Houston, Texas, United States
+**Applications close:** 2017-11-10
+Content:
+Applications are open for **Grand Prix Houston 2018**! Applications will close in: *3 weeks, 4 days*
 ```
 
 ## Running on Heroku
