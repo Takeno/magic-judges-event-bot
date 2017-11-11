@@ -1,5 +1,11 @@
+// @flow
+import type {Database} from '../utils/types.js.flow';
+
+let db: Database;
 if (process.env.DB === 'redis') {
-    module.exports = require('./redis');
+    db = require('./redis');
 } else {
-    module.exports = require('./lowdb');
+    db = require('./lowdb');
 }
+
+module.exports = db;

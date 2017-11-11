@@ -1,16 +1,18 @@
+// @flow
 import low from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
 import logger from '../utils/logger';
+import type {Event} from '../utils/types.js.flow';
 
 const adapter = new FileSync(__dirname + '/../../data/db.json');
 const db = low(adapter);
 
 db.defaults({processedEvents: []}).write();
 
-export async function saveParsedEvent(event) {
+export function saveParsedEvent(event: Event): Promise<any> {
     logger.debug('Saving %d to lowdb', event.id);
     if (process.env.DRY_RUN) {
-        return true;
+        return Promise.resolve(true);
     }
 
     return db
@@ -19,7 +21,7 @@ export async function saveParsedEvent(event) {
         .write();
 }
 
-export async function checkUnparsedEvents(event) {
+export function checkUnparsedEvents(event: Event): Promise<boolean | Event> {
     const check = db
         .get('processedEvents')
         .find({id: event.id})
@@ -27,7 +29,7 @@ export async function checkUnparsedEvents(event) {
 
     logger.debug('Checking %d in lowdb with result: %s', event.id, !!check);
 
-    return !check && event;
+    return Promise.resolve(!check && event);
 }
 
-export async function close() {}
+export function close(): void {}

@@ -1,14 +1,20 @@
+// @flow
 import {saveParsedEvent, checkUnparsedEvents} from './databases';
 import {configToEvents} from './utils/fetch-events';
 import postEvent from './utils/discord-sender';
 import logger from './utils/logger';
 import config from '../config.json';
+import type {Events, Event} from './utils/types.js.flow';
 
-async function removeEventsAlreadyParsed(events) {
-    const checked = await Promise.all(
+async function removeEventsAlreadyParsed(events: Events): Events {
+    const checked: Array<boolean | Event> = await Promise.all(
         events.map(event => checkUnparsedEvents(event))
     );
 
+    // It seems that async function *MUST* return a Promise
+    // for Flow.
+    // https://github.com/facebook/flow/issues/2171
+    // $FlowFixMe
     return checked.filter(c => !!c);
 }
 
@@ -18,9 +24,14 @@ export default (async function runBot() {
     //     fetchEvents(undefined, [Countries.ITALY_AND_MALTA]),
     // ]);
     try {
-        const responses = await Promise.all(configToEvents(config.events));
+        const responses: Array<Events> = await Promise.all(
+            configToEvents(config.events)
+        );
         // flat array
-        let events = responses.reduce((acc, arr) => acc.concat(arr), []);
+        let events: Events = responses.reduce(
+            (acc, arr) => acc.concat(arr),
+            []
+        );
 
         logger.info('Parsed %d events from site', events.length);
 

@@ -1,0 +1,29 @@
+// @flow
+
+export type Event = {
+    id: string,
+    name: string,
+    url: string,
+    location: string,
+    eventDate: string,
+    applicationClose: string,
+    applicationCloseRemaining: string,
+};
+
+export type Events = Array<Event>;
+
+export type ConfigurationInput = {
+    types?: Array<string>,
+    countries?: Array<string>,
+};
+
+export type Configuration = {
+    types?: Array<number>,
+    countries?: Array<number>,
+};
+
+export type Database = {
+    saveParsedEvent: Event => Promise<any>,
+    checkUnparsedEvents: Event => Promise<boolean | Event>,
+    close: () => void,
+};
