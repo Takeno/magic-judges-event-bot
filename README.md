@@ -14,6 +14,29 @@ It parses https://apps.magicjudges.org/events using filters defined in `config.j
 1. Run it with `npm start`
 
 
+## Available scripts
+### `npm run build`
+Each file in `src` is transpiled in `lib` directory using `babel`. It's required for production.
+
+### `npm start`
+Bot starts in production mode. It depends on artifacts of `npm run build` which must be run before.
+
+### `npm run start:dev`
+It starts the bot in dev mode, using `babel-node` for runtime transpiling.
+
+### `npm run lint`
+It checks for code style validations
+
+### `npm run flow`
+It checks for type validations
+
+
+## Docker commands
+`docker-compose` is used to run both redis and lowdb environments in dev mode (using `babel-node`).
+
+`docker-compose -f docker-compose.lowdb.yml run bot` to run the bot using lowdb as database.<br />
+`docker-compose -f docker-compose.redis.yml run bot` to run the bot using redis as database.
+
 ## How it works
 
 On start, the script makes requests to [AppJudges' events](https://apps.magicjudges.org/events) with defined filters. It parses the contents and converts them in Event objects.
