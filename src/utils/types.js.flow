@@ -23,7 +23,7 @@ export type Configuration = {
 };
 
 export type Database = {
-    saveParsedEvent: Event => Promise<any>,
+    saveParsedEvent: Event => Promise<boolean>,
     checkUnparsedEvents: Event => Promise<boolean | Event>,
     close: () => void,
 };

@@ -9,7 +9,7 @@ const db = low(adapter);
 
 db.defaults({processedEvents: []}).write();
 
-export function saveParsedEvent(event: Event): Promise<any> {
+export function saveParsedEvent(event: Event): Promise<boolean> {
     logger.debug('Saving %d to lowdb', event.id);
     if (process.env.DRY_RUN) {
         return Promise.resolve(true);

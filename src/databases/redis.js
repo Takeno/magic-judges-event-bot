@@ -10,9 +10,9 @@ const KEY = 'EVENT_';
 // to keep database small
 const TTL = 60 * 60 * 24 * 45;
 
-export function saveParsedEvent(event: Event): Promise<any> {
+export function saveParsedEvent(event: Event): Promise<boolean> {
     if (process.env.DRY_RUN) {
-        return Promise.resolve();
+        return Promise.resolve(true);
     }
 
     return new Promise((resolve, reject) => {
@@ -21,7 +21,7 @@ export function saveParsedEvent(event: Event): Promise<any> {
                 return reject(err);
             }
 
-            resolve();
+            resolve(true);
         });
     });
 }
