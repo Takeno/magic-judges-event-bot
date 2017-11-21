@@ -5,6 +5,7 @@
     "main": "lib/index.js",
     "scripts": {
         "build": "babel src --out-dir lib",
+        "dry-run": "DRY_RUN=1 LOGGER=debug npm run start:dev",
         "start:dev": "babel-node src/index",
         "start": "NODE_ENV=production node lib/index.js",
         "test": "echo \"Error: no test specified\" && exit 1",
