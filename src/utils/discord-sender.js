@@ -1,6 +1,8 @@
+// @flow
 import request from 'request-promise';
-import config from '../config.json';
+import config from '../../config.json';
 import logger from '../utils/logger';
+import type {Event} from './types.js.flow';
 
 function formatDiscordDescription(event) {
     return `**Quando:** ${event.eventDate}
@@ -8,7 +10,7 @@ function formatDiscordDescription(event) {
 **Chiusura application:** ${event.applicationClose}`;
 }
 
-export default function postEvent(event) {
+export default function postEvent(event: Event) {
     logger.info('Posting event to discord: ', event);
     if (process.env.DRY_RUN) {
         return true;

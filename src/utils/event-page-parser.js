@@ -1,13 +1,15 @@
-const cheerio = require('cheerio');
+// @flow
+import cheerio from 'cheerio';
+import type {Event, Events} from './types.js.flow';
 
-export default function parseEventsPage(html) {
+export default function parseEventsPage(html: string): Events {
     const $ = cheerio.load(html);
     const openedEvents = $('#open_table').find('tbody > tr');
 
     return openedEvents.get().map(parseEventRow);
 }
 
-function parseEventRow(tr) {
+function parseEventRow(tr): Event {
     const $tds = cheerio('td', tr);
     const name = $tds
         .eq(0)

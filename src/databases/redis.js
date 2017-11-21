@@ -1,5 +1,7 @@
+// @flow
 import redis from 'redis';
 import logger from '../utils/logger';
+import type {Event} from '../utils/types.js.flow';
 
 const client = redis.createClient(process.env.REDIS_URL);
 
@@ -8,9 +10,9 @@ const KEY = 'EVENT_';
 // to keep database small
 const TTL = 60 * 60 * 24 * 45;
 
-export function saveParsedEvent(event) {
+export function saveParsedEvent(event: Event): Promise<boolean> {
     if (process.env.DRY_RUN) {
-        return true;
+        return Promise.resolve(true);
     }
 
     return new Promise((resolve, reject) => {
@@ -19,12 +21,12 @@ export function saveParsedEvent(event) {
                 return reject(err);
             }
 
-            resolve();
+            resolve(true);
         });
     });
 }
 
-export function checkUnparsedEvents(event) {
+export function checkUnparsedEvents(event: Event): Promise<boolean | Event> {
     return new Promise((resolve, reject) => {
         client.get(KEY + event.id, (err, data) => {
             if (err) {
@@ -51,7 +53,7 @@ export function checkUnparsedEvents(event) {
     });
 }
 
-export function close() {
+export function close(): void {
     logger.debug('Closing redis connection');
     client.end(true);
 }

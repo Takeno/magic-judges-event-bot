@@ -1,6 +1,8 @@
+// @flow
 import request from 'request-promise';
 import logger from '../utils/logger';
 import parseEventsPage from './event-page-parser';
+import type {ConfigurationInput, Configuration, Events} from './types.js.flow';
 
 // events type
 export const Types = {
@@ -55,7 +57,10 @@ export const Countries = {
     USA_SOUTHWEST: 3,
 };
 
-export default function fetchEvents(types = [], countries = []) {
+export default function fetchEvents(
+    types: Array<number> = [],
+    countries: Array<number> = []
+): Promise<Events> {
     const ENDPOINT = 'https://apps.magicjudges.org/events/';
 
     let query = [];
@@ -71,7 +76,9 @@ export default function fetchEvents(types = [], countries = []) {
     );
 }
 
-export function configToEvents(data) {
+export function configToEvents(
+    data: Array<ConfigurationInput>
+): Array<Promise<Events>> {
     return data.map(({types = [], countries = []}) => {
         return fetchEvents(
             types.map(k => {
