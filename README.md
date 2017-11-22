@@ -126,7 +126,7 @@ $ export REDIS_URL=<redis server>
 To test your configuration, you can run bot in DRY_RUN mode. In this way, you'll get only info about what will be published.
 
 ```sh
-$ DRY_RUN=1 npm start
+$ DRY_RUN=1 npm run start:dev
 
 Posting  { id: '8677',
   name: 'Grand Prix Houston 2018',
@@ -139,7 +139,9 @@ Posting  { id: '8677',
 
 You can also set the logger level to `debug` instead of the default `info`, by adding an additional environment variable. This way, you will also see a log of the actual text that would be sent to Discord:
 ```sh
-$ DRY_RUN=1 LOGGER=debug npm start
+$ DRY_RUN=1 LOGGER=debug npm run start:dev
+# as a quicker alternative, you can run
+# npm run dry-run
 
 Posting  { id: '8677',
   name: 'Grand Prix Houston 2018',
