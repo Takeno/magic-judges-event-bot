@@ -3,35 +3,37 @@ import request from 'request-promise';
 import config from '../../config.json';
 import logger from '../utils/logger';
 import type {Event} from './types.js.flow';
-import {translate} from '../i18n';
+import t from './translate';
 
-function formatDiscordDescription(event: $FlowFixMe, language: string = 'en') {
-    const t = translate(language);
-    return `**${t('when', 'When:')}** ${event.eventDate}
-**${t('where', 'Where:')}** ${event.location}
-**${t('closing', 'Applications close:')}** ${event.applicationClose}`;
+function formatDiscordDescription(event: Event) {
+    return `**${t('when')}** ${event.eventDate}
+**${t('where')}** ${event.location}
+**${t('closing')}** ${event.applicationClose}`;
 }
 
-export default function postEvent(event: Event) {
-    logger.info('Posting event to discord: ', event);
-    const t = translate(config.language);
-    const description = formatDiscordDescription(event, config.language);
-    const content = t(
-        'content',
-        `Applications are open for **${event.name}**! Applications will close in: *${event.applicationCloseRemaining}*`,
-        {
-            eventName: event.name,
-            eventClose: event.applicationCloseRemaining,
-        },
-    );
+function formatContent(event: Event) {
+    return t('content', {
+        eventName: event.name,
+        eventClose: event.applicationCloseRemaining,
+    });
+}
 
-    if (process.env.DRY_RUN) {
-        logger.debug(`DRY_RUN selected.
+function formatDryRunLog(description: string, content: string): string {
+    return `DRY_RUN selected.
 Posted event infos:
 Description:
 ${description}
 Content:
-${content}`);
+${content}`;
+}
+
+export default function postEvent(event: Event) {
+    logger.info('Posting event to discord: ', event);
+    const description = formatDiscordDescription(event);
+    const content = formatContent(event);
+
+    if (process.env.DRY_RUN) {
+        logger.debug(formatDryRunLog(description, content));
         return true;
     }
 

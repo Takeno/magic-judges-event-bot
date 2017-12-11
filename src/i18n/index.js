@@ -14,6 +14,10 @@ const translations = {
     it,
 };
 
+function get(dict: {[string]: string}, key: string): string {
+    return dict[key] || '';
+}
+
 // Cheers to Polyglot.js for this interpolation function
 // https://github.com/airbnb/polyglot.js/blob/master/index.js
 function interpolate(
@@ -49,21 +53,16 @@ function interpolate(
 
 function translator(
     dicts: $Exact<typeof translations>,
-    interpolate: typeof interpolate,
 ): (
     language: string,
-) => (
-    key: $Keys<Language>,
-    defaultMessage: string,
-    substitutions: ?{[key: string]: string},
-) => string {
-    return language => (key, defaultMessage, substitutions) =>
+) => (key: $Keys<Language>, substitutions?: {[string]: string}) => string {
+    return language => (key, substitutions) =>
         (dicts[language] &&
             dicts[language][key] &&
-            interpolate(dicts[language][key], substitutions)) ||
-        defaultMessage;
+            interpolate(get(dicts[language], key), substitutions)) ||
+        interpolate(get(dicts.en, key), substitutions);
 }
 
-const translate = translator(translations, interpolate);
+const translate = translator(translations);
 
 export {translate};
