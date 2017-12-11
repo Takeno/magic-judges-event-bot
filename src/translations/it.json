@@ -1,0 +1,6 @@
+{
+    "when": "Quando:",
+    "where": "Dove:",
+    "closing": "Chiusura application:",
+    "content": "È aperta l'application per **%{eventName}**! Chiuderà tra: *%{eventClose}*"
+}

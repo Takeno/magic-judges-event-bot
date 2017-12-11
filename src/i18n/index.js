@@ -1,6 +1,6 @@
 // @flow
-import en from './en';
-import it from './it';
+import en from '../translations/en.json';
+import it from '../translations/it.json';
 
 export type Language = {|
     closing?: string,
@@ -9,7 +9,9 @@ export type Language = {|
     content?: string,
 |};
 
-const translations = {
+export type Translations = {[string]: Language};
+
+const translations: Translations = {
     en,
     it,
 };
@@ -52,7 +54,7 @@ function interpolate(
 }
 
 function translator(
-    dicts: $Exact<typeof translations>,
+    dicts: Translations,
 ): (
     language: string,
 ) => (key: $Keys<Language>, substitutions?: {[string]: string}) => string {
