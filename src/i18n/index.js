@@ -1,20 +1,14 @@
 // @flow
-import en from '../translations/en.json';
-import it from '../translations/it.json';
+import {translations} from './translations';
 
 export type Language = {|
-    closing?: string,
-    when?: string,
-    where?: string,
-    content?: string,
+    closing: string,
+    when: string,
+    where: string,
+    content: string,
 |};
 
 export type Translations = {[string]: Language};
-
-const translations: Translations = {
-    en,
-    it,
-};
 
 function get(dict: {[string]: string}, key: string): string {
     return dict[key] || '';
@@ -57,12 +51,13 @@ function translator(
     dicts: Translations,
 ): (
     language: string,
-) => (key: $Keys<Language>, substitutions?: {[string]: string}) => string {
-    return language => (key, substitutions) =>
-        (dicts[language] &&
-            dicts[language][key] &&
-            interpolate(get(dicts[language], key), substitutions)) ||
-        interpolate(get(dicts.en, key), substitutions);
+    key: $Keys<Language>,
+    substitutions?: {[string]: string},
+) => string {
+    return (language, key, substitutions) => {
+        const dict = dicts[language] || dicts.en;
+        return interpolate(get(dict, key), substitutions);
+    };
 }
 
 const translate = translator(translations);

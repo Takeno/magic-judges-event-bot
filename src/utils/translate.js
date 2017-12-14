@@ -7,5 +7,5 @@ export default function t(
     key: $Keys<Language>,
     substitutions?: {[string]: string},
 ): string {
-    return translate(config.language)(key, substitutions);
+    return translate(config.language, key, substitutions);
 }
