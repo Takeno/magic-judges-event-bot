@@ -1,0 +1,6 @@
+{
+    "when": "Date:",
+    "where": "Location:",
+    "closing": "Applications close:",
+    "content": "Applications are open for **%{eventName}**! Applications will close in: *%{eventClose}*"
+}
