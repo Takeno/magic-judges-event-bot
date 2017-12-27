@@ -1,9 +1,19 @@
 // @flow
 import fs from 'fs';
+import logger from '../utils/logger';
 import type {Language} from './index';
 
 function getLanguageFromJson(filename: string): Language {
-    return require(`../../translations/${filename}`);
+    try {
+        return require(`../../translations/${filename}`);
+    } catch (Error) {
+        logger.warn(
+            `Language file ${
+                filename
+            } not found. Loading english language instead.`
+        );
+        return require('../../translations/en.json');
+    }
 }
 
 function checkLanguage(language: Language): Array<string> {
