@@ -1,11 +1,12 @@
 // @flow
 import config from '../../config.json';
 import {translate} from '../i18n';
-import type {Language} from '../i18n';
+import {getTranslation} from '../i18n/translations';
+import type {Language, Substitutions} from '../i18n';
 
-export default function t(
-    key: $Keys<Language>,
-    substitutions?: {[string]: string},
-): string {
-    return translate(config.language, key, substitutions);
+const lang = getTranslation(config.language);
+const translator = translate(lang);
+
+export function t(key: $Keys<Language>, substitutions?: Substitutions): string {
+    return translator(key, substitutions);
 }

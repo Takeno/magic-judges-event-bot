@@ -18,8 +18,8 @@ export type ConfigurationInput = {
 };
 
 export type Configuration = {
-    types?: Array<number>,
-    countries?: Array<number>,
+    events: Array<ConfigurationInput>,
+    language: string,
 };
 
 export type Database = {

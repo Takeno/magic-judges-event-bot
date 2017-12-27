@@ -2,7 +2,7 @@
 import request from 'request-promise';
 import logger from '../utils/logger';
 import parseEventsPage from './event-page-parser';
-import type {ConfigurationInput, Configuration, Events} from './types.js.flow';
+import type {ConfigurationInput, Events} from './types.js.flow';
 
 // events type
 export const Types = {

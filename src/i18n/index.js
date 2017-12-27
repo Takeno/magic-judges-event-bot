@@ -1,6 +1,4 @@
 // @flow
-import {translations} from './translations';
-
 export type Language = {|
     closing: string,
     when: string,
@@ -8,18 +6,11 @@ export type Language = {|
     content: string,
 |};
 
-export type Translations = {[string]: Language};
-
-function get(dict: {[string]: string}, key: string): string {
-    return dict[key] || '';
-}
+export type Substitutions = {[string]: string};
 
 // Cheers to Polyglot.js for this interpolation function
 // https://github.com/airbnb/polyglot.js/blob/master/index.js
-function interpolate(
-    phrase: string,
-    substitutions: ?{[key: string]: string},
-): string {
+function interpolate(phrase: string, substitutions: ?Substitutions): string {
     if (!substitutions) {
         return phrase;
     }
@@ -47,19 +38,10 @@ function interpolate(
     );
 }
 
-function translator(
-    dicts: Translations,
-): (
-    language: string,
-    key: $Keys<Language>,
-    substitutions?: {[string]: string},
-) => string {
-    return (language, key, substitutions) => {
-        const dict = dicts[language] || dicts.en;
-        return interpolate(get(dict, key), substitutions);
-    };
+function translate(
+    language: Language,
+): (key: $Keys<Language>, substitutions?: Substitutions) => string {
+    return (key, substitutions) => interpolate(language[key], substitutions);
 }
-
-const translate = translator(translations);
 
 export {translate};

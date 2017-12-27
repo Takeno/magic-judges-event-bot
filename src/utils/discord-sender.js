@@ -3,7 +3,7 @@ import request from 'request-promise';
 import config from '../../config.json';
 import logger from '../utils/logger';
 import type {Event} from './types.js.flow';
-import t from './translate';
+import {t} from './translate';
 
 function formatDiscordDescription(event: Event) {
     return `**${t('when')}** ${event.eventDate}
